@@ -1,6 +1,6 @@
 # artex — ngu pack
 
-A ngu-desktop pack that ports the **ARTEX** authorized-assessment methodology into the kernel: an English autonomous-assessment persona, the reconnaissance and browser-automation skills, optional external-platform adapter, and the bundled defensive detection material.
+A ngu-desktop pack that ports the **ARTEX** authorized-assessment methodology into the kernel: a Chinese autonomous-assessment persona (localized from the pack's original English rewrite), the reconnaissance and browser-automation skills, optional external-platform adapter, and the bundled defensive detection material.
 
 > **Authorization first.** Use this pack only against systems you own or have explicit written authorization to test, inside the stated scope. Unauthorized scanning, probing, exploitation, or data access is illegal. See `soul.md` §0 and `injections.json`.
 
@@ -11,7 +11,7 @@ A ngu-desktop pack that ports the **ARTEX** authorized-assessment methodology in
 | Persona | `soul.md` | Autonomous authorized-assessment discipline: broad-then-converge, go-deep, adversarial self-verification, evidence-only findings, wrap-up |
 | Constant rules | `injections.json` | Authorization gate, evidence discipline, red lines (constant prompt prefix) |
 | Search | `search.json` | Tavily fill-in (`TAVILY_API_KEY`); never overrides configured settings |
-| `api-recon` | `skills/api-recon/` | Static + runtime API/route/parameter reconnaissance for authorized targets; reference scripts copied verbatim, methodology rewritten in English |
+| `api-recon` | `skills/api-recon/` | Static + runtime API/route/parameter reconnaissance for authorized targets; Chinese guide first, English reference body behind it; reference scripts copied verbatim |
 | `playwright-cli` | `skills/playwright-cli/` | Browser automation via `playwright-cli` (verbatim usage reference) |
 | `scopesentry` | `skills/scopesentry/` | Optional, operator-initiated self-hosted adapter: `ssclient.js` calls the instance's HTTP MCP over Bash (Windows/macOS/Linux); `deploy.ps1`/`deploy.sh` orchestrate Docker deployment; idle without an instance and key |
 | `defense-detections` | `skills/defense-detections/` | Sigma rules, Suricata rules, IOCs, ATT&CK layer, host triage, defense guide — defender-side material |
@@ -21,13 +21,13 @@ The pack deliberately ships **no** `models.json` / `context.json` / `mcp.json` /
 ## Install
 
 ```bash
-ngu install dist/artex-1.0.1.dshpack          # manifest build
-# or
+ngu install dist/artex-1.0.1.dshpack
 ```
 
 Verify an archive before install:
 
 ```bash
+ngu verify dist/artex-1.0.1.dshpack
 ```
 
 Reload/restart the session after install; the persona joins the installed-pack persona set and the skills register under the skill tool.
@@ -45,7 +45,7 @@ Reload/restart the session after install; the persona joins the installed-pack p
 ```
 pack-src/
   dsh.index.json            # manifest
-  soul.md                   # persona (rewritten English)
+  soul.md                   # persona (Chinese)
   injections.json           # constant authorization/evidence/red-line rules
   search.json               # tavily fill-in
   LICENSE                   # AGPL-3.0 verbatim

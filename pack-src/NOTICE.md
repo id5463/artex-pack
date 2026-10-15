@@ -7,14 +7,16 @@ This pack ("artex" for nguruvilu) is a content port derived from the ARTEX proje
 
 The whole pack is distributed under **GNU AGPL-3.0**; the verbatim license text is in `LICENSE`. Because the carried scripts and detection files are AGPL-3.0 derivatives, the pack as a whole remains AGPL-3.0.
 
+**1.0.1 (evaluation P0 fixes):** `soul.md` and `injections.json` are now Chinese localizations of this pack's own English rewrite (derivative status unchanged, no new upstream text added); `skills/api-recon/SKILL.md` gained a Chinese guide ahead of its unchanged English reference body. License terms and every license column below are unchanged — only prose language was localized.
+
 ## Per-component treatment
 
 | Component | Treatment | License |
 |---|---|---|
-| `soul.md` | Rewritten in English for this pack; methodology distilled from the artex-ko built-in prompts (`agent/promptcatalog.go`, `agent/pentestDefaultTmpl`, `agent/planner.go`, `agent/worker.go`, `agent/goals.go`, `agent/mainagent.go`) and `README.en.md` architecture section | AGPL-3.0 (derivative) |
-| `injections.json` | Rewritten constant rules; red-line list derived from the artex-ko built-in guard deny seeds (`db/db.go`) | AGPL-3.0 (derivative) |
+| `soul.md` | Chinese localization (1.0.1) of this pack's English rewrite; methodology distilled from the artex-ko built-in prompts (`agent/promptcatalog.go`, `agent/pentestDefaultTmpl`, `agent/planner.go`, `agent/worker.go`, `agent/goals.go`, `agent/mainagent.go`) and `README.en.md` architecture section | AGPL-3.0 (derivative) |
+| `injections.json` | Rewritten constant rules (Chinese since 1.0.1, with explicit method/scope enumeration); red-line list derived from the artex-ko built-in guard deny seeds (`db/db.go`) | AGPL-3.0 (derivative) |
 | `search.json` | Pack-authored fill-in; no upstream text | Pack author |
-| `skills/api-recon/SKILL.md` | Rewritten in English; method re-expressed from the upstream Chinese SKILL.md, structure and phase order preserved | AGPL-3.0 (derivative) |
+| `skills/api-recon/SKILL.md` | Chinese guide added in 1.0.1 ahead of the pack's English reference body; method re-expressed from the upstream Chinese SKILL.md, structure and phase order preserved | AGPL-3.0 (derivative) |
 | `skills/api-recon/reference.md` | Copied verbatim from artex-ko | AGPL-3.0 |
 | `skills/api-recon/scripts/` (`harvest_static.py`, `spider_mpa.py`, `extract_route_map.py`, `build_perm_tree.py`, `runtime_harvest.js`, `preload.js`, `package.json`, `package-lock.json`) | Copied verbatim; no per-file header in upstream, covered by repo LICENSE | AGPL-3.0 |
 | `skills/playwright-cli/` (`SKILL.md` + `references/*.md`) | Copied verbatim as found in artex-ko; English already | AGPL-3.0 (as carried in the repo) |
@@ -30,7 +32,7 @@ The whole pack is distributed under **GNU AGPL-3.0**; the verbatim license text 
 
 - The ARTEX Go server, Next.js web UI, PostgreSQL schema, engine and MCP runtime are not portable into a pack and were not copied.
 - `detections/tests/` (CI validation harness, ~244 KB) was excluded; the signatures and documentation it validates are carried without it.
-- Korean and Chinese localization copies (`README.ko.md`, `*-ko.md`, `*-zh.md`) inside carried detection folders are kept verbatim where upstream shipped them; the pack-facing prose is English.
+- Korean and Chinese localization copies (`README.ko.md`, `*-ko.md`, `*-zh.md`) inside carried detection folders are kept verbatim where upstream shipped them; since 1.0.1 the pack-facing persona/rule prose is Chinese and carried READMEs keep their upstream language.
 
 ## No warranty
 
