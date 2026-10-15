@@ -1,0 +1,46 @@
+{
+  "formatVersion": 1,
+  "game": "nguruvilu",
+  "name": "artex",
+  "versionId": "1.0.1",
+  "license": "AGPL-3.0",
+  "kernelVersion": "0.1.0",
+  "dependencies": {
+    "nguruvilu": ">=0.1.0 <0.2.0"
+  },
+  "soul": "soul.md",
+  "injections": "injections.json",
+  "search": "search.json",
+  "skills": [
+    {
+      "id": "api-recon",
+      "source": "./skills/api-recon",
+      "license": "AGPL-3.0",
+      "deps": { "python": ">=3.9", "node": ">=18" }
+    },
+    {
+      "id": "playwright-cli",
+      "source": "./skills/playwright-cli",
+      "license": "AGPL-3.0",
+      "deps": { "node": ">=18", "playwright-cli": "optional" }
+    },
+    {
+      "id": "scopesentry",
+      "source": "./skills/scopesentry",
+      "license": "AGPL-3.0",
+      "deps": { "node": ">=18", "docker": "optional, only for self-hosted instance" }
+    },
+    {
+      "id": "defense-detections",
+      "source": "./skills/defense-detections",
+      "license": "AGPL-3.0"
+    }
+  ],
+  "components": [
+    { "id": "artex-soul", "kind": "soul", "license": "AGPL-3.0" },
+    { "id": "api-recon", "kind": "skill", "license": "AGPL-3.0" },
+    { "id": "playwright-cli", "kind": "skill", "license": "AGPL-3.0" },
+    { "id": "scopesentry", "kind": "skill", "license": "AGPL-3.0" },
+    { "id": "defense-detections", "kind": "skill", "license": "AGPL-3.0" }
+  ]
+}
