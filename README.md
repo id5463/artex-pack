@@ -21,13 +21,13 @@ The pack deliberately ships **no** `models.json` / `context.json` / `mcp.json` /
 ## Install
 
 ```bash
-ngu install dist/artex-1.0.1.dshpack
+ngu install dist/artex-1.0.2.dshpack
 ```
 
 Verify an archive before install:
 
 ```bash
-ngu verify dist/artex-1.0.1.dshpack
+ngu verify dist/artex-1.0.2.dshpack
 ```
 
 Reload/restart the session after install; the persona joins the installed-pack persona set and the skills register under the skill tool.

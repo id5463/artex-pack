@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "game": "nguruvilu",
   "name": "artex",
-  "versionId": "1.0.1",
+  "versionId": "1.0.2",
   "license": "AGPL-3.0",
   "kernelVersion": "0.1.0",
   "dependencies": {

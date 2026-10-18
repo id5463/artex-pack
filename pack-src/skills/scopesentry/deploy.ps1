@@ -3,7 +3,9 @@
 # Run ONLY when the operator explicitly asks to deploy ScopeSentry. This script
 # starts Docker (if installed but stopped), clones the official repository,
 # writes local credentials, brings up the four containers, and waits for the
-# Web UI. It never touches anything outside its own install directory.
+# Web UI. It writes files only inside its own install directory and never
+# installs software system-wide — but it may start Docker Desktop (a running
+# system service) to bring the engine up.
 #
 # Prerequisites the script cannot provide: Docker Desktop installed and able to
 # run Linux containers, git, an outbound network connection for image pulls.
@@ -11,10 +13,12 @@
 # Usage:
 #   powershell -ExecutionPolicy Bypass -File deploy.ps1
 #   powershell -ExecutionPolicy Bypass -File deploy.ps1 -InstallDir D:\ss
+#   powershell -ExecutionPolicy Bypass -File deploy.ps1 -Ref <tag-or-commit>   # pinned upstream version
 
 param(
     [string]$InstallDir = "$env:USERPROFILE\scopesentry",
-    [int]$HealthTimeoutSec = 300
+    [int]$HealthTimeoutSec = 300,
+    [string]$Ref = ""
 )
 
 $ErrorActionPreference = 'Stop'
@@ -54,11 +58,23 @@ Say "Docker engine OK."
 $repo = Join-Path $InstallDir 'ScopeSentry'
 if (-not (Test-Path $repo)) {
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-    Say "Cloning https://github.com/Autumn-27/ScopeSentry into $repo ..."
-    git clone https://github.com/Autumn-27/ScopeSentry.git $repo
+    if ($Ref) {
+        Say "Cloning https://github.com/Autumn-27/ScopeSentry into $repo (pinned ref: $Ref) ..."
+        git clone --branch $Ref https://github.com/Autumn-27/ScopeSentry.git $repo
+    } else {
+        Say "Cloning https://github.com/Autumn-27/ScopeSentry into $repo (no -Ref: default branch, NOT version-pinned) ..."
+        git clone https://github.com/Autumn-27/ScopeSentry.git $repo
+    }
 } else {
     Say "Reusing existing checkout at $repo (git pull)."
     Push-Location $repo; git pull; Pop-Location
+}
+
+# Record the exact revision deployed, so the install is reproducible.
+$rev = (git -C $repo rev-parse HEAD 2>$null)
+if ($rev) {
+    $rev | Set-Content -Path (Join-Path $InstallDir 'clone-revision.txt') -Encoding ascii
+    Say "Recorded deployed revision $rev -> clone-revision.txt"
 }
 
 # 3. Local credentials: write .env once, never overwrite an existing one.

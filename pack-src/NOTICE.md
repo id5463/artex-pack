@@ -7,7 +7,7 @@ This pack ("artex" for nguruvilu) is a content port derived from the ARTEX proje
 
 The whole pack is distributed under **GNU AGPL-3.0**; the verbatim license text is in `LICENSE`. Because the carried scripts and detection files are AGPL-3.0 derivatives, the pack as a whole remains AGPL-3.0.
 
-**1.0.1 (evaluation P0 fixes):** `soul.md` and `injections.json` are now Chinese localizations of this pack's own English rewrite (derivative status unchanged, no new upstream text added); `skills/api-recon/SKILL.md` gained a Chinese guide ahead of its unchanged English reference body. License terms and every license column below are unchanged — only prose language was localized.
+**1.0.1 (evaluation P0 fixes):** `soul.md` and `injections.json` are now Chinese localizations of this pack's own English rewrite (derivative status unchanged, no new upstream text added); `skills/api-recon/SKILL.md` gained a Chinese guide ahead of its unchanged English reference body. License terms and every license column below are unchanged — only prose language was localized. **1.0.2 (P1):** fourth standing injection (four-file working-note convention), standing rules compressed to pointer form (deduplicated against the soul), deploy-script revision pinning (`-Ref`/`-r` plus a recorded `clone-revision.txt`) — no provenance or license changes.
 
 ## Per-component treatment
 

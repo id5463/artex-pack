@@ -4,23 +4,27 @@
 #
 # Run ONLY when the operator explicitly asks to deploy ScopeSentry. Starts
 # Docker if it can, clones the official repository, writes local credentials,
-# brings up the four containers, and waits for the Web UI. Never writes outside
-# its own install directory and never installs Docker itself.
+# brings up the four containers, and waits for the Web UI. Writes files only
+# inside its own install directory and never installs Docker itself — but it
+# may start the Docker engine (Docker.app on macOS) to bring it up.
 #
 # Usage:
 #   ./deploy.sh
 #   ./deploy.sh -i ~/scopesentry -t 300
+#   ./deploy.sh -r <tag-or-commit>   # pinned upstream version
 
 set -euo pipefail
 
 INSTALL_DIR="$HOME/scopesentry"
 HEALTH_TIMEOUT=300
+REF=""
 
-while getopts "i:t:" opt; do
+while getopts "i:t:r:" opt; do
   case "$opt" in
     i) INSTALL_DIR="$OPTARG" ;;
     t) HEALTH_TIMEOUT="$OPTARG" ;;
-    *) echo "usage: $0 [-i install-dir] [-t health-timeout-sec]"; exit 2 ;;
+    r) REF="$OPTARG" ;;
+    *) echo "usage: $0 [-i install-dir] [-t health-timeout-sec] [-r ref]"; exit 2 ;;
   esac
 done
 
@@ -56,16 +60,25 @@ if ! docker info >/dev/null 2>&1; then
 fi
 say "Docker engine OK."
 
-# 2. Repository: clone once, pull afterwards.
+# 2. Repository: clone once, pull afterwards. With -r the upstream version is
+#    pinned (tag or commit); without it we clone the default branch and say so.
+#    Either way the exact deployed revision is recorded for reproducibility.
 REPO="$INSTALL_DIR/ScopeSentry"
 if [ ! -d "$REPO" ]; then
   mkdir -p "$INSTALL_DIR"
-  say "Cloning https://github.com/Autumn-27/ScopeSentry into $REPO ..."
-  git clone https://github.com/Autumn-27/ScopeSentry.git "$REPO"
+  if [ -n "$REF" ]; then
+    say "Cloning https://github.com/Autumn-27/ScopeSentry into $REPO (pinned ref: $REF) ..."
+    git clone --branch "$REF" https://github.com/Autumn-27/ScopeSentry.git "$REPO"
+  else
+    say "Cloning https://github.com/Autumn-27/ScopeSentry into $REPO (no -r: default branch, NOT version-pinned) ..."
+    git clone https://github.com/Autumn-27/ScopeSentry.git "$REPO"
+  fi
 else
   say "Reusing existing checkout at $REPO (git pull)."
   (cd "$REPO" && git pull)
 fi
+git -C "$REPO" rev-parse HEAD > "$INSTALL_DIR/clone-revision.txt"
+say "Recorded deployed revision $(cat "$INSTALL_DIR/clone-revision.txt")"
 
 # 3. Local credentials: write .env once, never overwrite an existing one.
 ENV_FILE="$REPO/.env"

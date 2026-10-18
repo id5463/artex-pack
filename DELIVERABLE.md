@@ -7,11 +7,11 @@ Ports the ARTEX authorized-assessment methodology into a nguruvilu (`ngu-desktop
 ```
 artex-pack/
 ├── dist/
-│   └── artex-1.0.1.dshpack            # manifest build; every reference is local, so exactly one artifact is shipped
+│   └── artex-1.0.2.dshpack            # manifest build; every reference is local, so exactly one artifact is shipped
 ├── pack-src/                          # pack source tree used to build the archive
 │   ├── dsh.index.json
 │   ├── soul.md                        # Chinese persona (faithful translation of the original English rewrite)
-│   ├── injections.json                 # constant authorization / evidence / red-line rules (Chinese; methods enumerated)
+│   ├── injections.json                 # 4 standing rules (Chinese): gate, evidence, red lines, four-file convention
 │   ├── search.json                    # Tavily fill-in (TAVILY_API_KEY); never overrides config
 │   ├── README.md                      # in-pack readme
 │   ├── NOTICE.md                      # provenance + per-component license
@@ -27,21 +27,21 @@ artex-pack/
 ## Install
 
 ```bash
-ngu install dist/artex-1.0.1.dshpack
+ngu install dist/artex-1.0.2.dshpack
 # custom destination instead of the default packs dir:
-ngu install dist/artex-1.0.1.dshpack --into <dir>
+ngu install dist/artex-1.0.2.dshpack --into <dir>
 ```
 
 One artifact is shipped on purpose: every reference in this pack is carried locally, so an extra "offline" archive would be a byte-identical duplicate of the manifest build (verified in 1.0.0; stated here instead of shipping an empty shell).
 
 SHA-256 of the shipped archive:
 
-`caf1c46838db853d715308efa206d48e17dda995f4c27ed0be30fe5da1d80f65`
+`e153c26959ae0461ee05c079e12126ec71fbd34d0e3d8ce4b314afa9cdca5636`
 
 Verify before installing:
 
 ```bash
-ngu verify dist/artex-1.0.1.dshpack
+ngu verify dist/artex-1.0.2.dshpack
 ```
 
 Restart the session after install. Bring your own model route (the pack sets none).
@@ -56,18 +56,25 @@ Restart the session after install. Bring your own model route (the pack sets non
 
 AGPL-3.0 overall (carried scripts and detection files are AGPL-3.0 derivatives). See `pack-src/LICENSE` and `pack-src/NOTICE.md` for per-component provenance and what was rewritten vs. copied verbatim. Upstream: Autumn-27/ARTEX; source edition: jiwoochris/artex-ko.
 
-## Verification performed (1.0.1, all on this machine, isolated)
+## Verification performed (1.0.2, all on this machine, isolated)
 
 | Check | Result |
 |---|---|
-| `ngu pack` manifest build | ok, 60 files, AGPL-3.0, artex 1.0.1 |
+| `ngu pack` manifest build | ok, 60 files, AGPL-3.0, artex 1.0.2 |
 | `ngu verify` | ok, zero warnings, kernel 0.1.0, requires `>=0.1.0 <0.2.0` |
+| Script syntax | deploy.ps1 parser: 0 errors; deploy.sh `bash -n`: clean |
 | Isolated install (fresh NGU_HOME) + `ngu apply` | all 4 skills loaded, 0 failed, 0 skipped |
-| Isolated boot content adoption | persona 3874 chars (Chinese) adopted; 3 injection rules parsed; Tavily search parsed |
-| Live smoke, 1-step model turn | persona answered in Chinese as the ARTEX authorized-assessment agent |
+| Isolated boot content adoption | persona 3874 chars (Chinese) adopted; **4 injection rules** parsed; Tavily search parsed |
+| Live smoke (mimo-v2.6-flash) | on a bare "introduce yourself" prompt the agent answered in Chinese, **created the four-file working notes unprompted**, then asked for the task brief (authorization gate working) |
 | Skill catalog scan | api-recon (Chinese description), defense-detections, playwright-cli, scopesentry all listed |
 
 Verification ran under an isolated `NGU_HOME`; the user's real `~/.nguruvilu` was left untouched.
+
+## Changes in 1.0.2 (fixes from the evaluation's P1 list)
+
+- **Four-file convention promoted to a standing injection** (new `artex-four-file-convention` rule): the `assets.md`/`facts.md`/`findings.md`/`todo.md` discipline from soul §3/§7 is now injected every turn. Verified live: the agent created all four working notes *before receiving any task brief*.
+- **Injection duplication removed**: the three existing standing rules were compressed to pointer-style reminders (full detail lives once in the soul), keeping the method/scope enumeration verbatim — less repeated text, same enforcement surface.
+- **ScopeSentry deploy scripts hardened**: comments now state honestly that the script may start Docker Desktop (a system service); a new optional `-Ref`/`-r` parameter pins the upstream clone to a tag or commit, and the exact deployed revision is always recorded to `clone-revision.txt` (previously the clone floated on the default branch with no record).
 
 ## Changes in 1.0.1 (fixes from the evaluation's P0 list)
 
@@ -79,7 +86,7 @@ Verification ran under an isolated `NGU_HOME`; the user's real `~/.nguruvilu` wa
 ## Rebuild (optional)
 
 ```powershell
-ngu pack pack-src -o dist/artex-1.0.1.dshpack
+ngu pack pack-src -o dist/artex-1.0.2.dshpack
 ```
 
 ## Known limits
